@@ -1,0 +1,28 @@
+{
+  "name": "web-theme-devlepment-boilerplate",
+  "version": "1.0.0",
+  "description": "I will use this theme to create any frontend theme for my websites. ",
+  "main": "gulfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/princebillyGK/web-theme-devlepment-boilerplate.git"
+  },
+  "keywords": [
+    "gulfile",
+    "frontend",
+    "boilerplate",
+    "demo",
+    "css",
+    "js",
+    "html"
+  ],
+  "author": "princebillygk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/princebillyGK/web-theme-devlepment-boilerplate/issues"
+  },
+  "homepage": "https://github.com/princebillyGK/web-theme-devlepment-boilerplate#readme"
+}
