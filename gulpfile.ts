@@ -29,41 +29,33 @@ function getPath(path: string): string {
     return path
 }
 
-export async function liveBrowser() {
-    connect.server({
-        livereload: true,
-        root: "build",
-        port: 3000
-    })
-    await watchForChanges()
-}
 
-export async function buildHtml() {
+async function buildHtml() {
     console.log("building HTML...")
     src(["/**/*.html", "!build/**/*"])
         .pipe(dest(getPath("/")))
-    console.log("building HTML finished")
+    console.log("build HTML files")
 }
 
-export async function copyVendors() {
+async function copyVendors() {
     console.log("copying vendor files...")
     src("./vendors/**/*")
         .pipe(dest(getPath("./vendors")))
-    console.log("copying vendor files finished")
+    console.log("copied vendor files")
 }
 
-export async function buildScripts() {
+async function buildScripts() {
     console.log("building scripts...")
     src('./assets/scripts/**/*.js')
-        .pipe(babel)
+        .pipe(babel())
         .pipe(dest(getPath("./assets/scripts")))
         .pipe(uglify())
         .pipe(rename({extname: '.min.js'}))
         .pipe(dest(getPath("./assets/scripts")))
-    console.log("building scripts finished")
+    console.log("build scripts")
 }
 
-export async function buildStyles() {
+async function buildStyles() {
     console.log("building styles...")
     src("./assets/styles/main.scss")
         .pipe(postcss([
@@ -80,7 +72,7 @@ export async function buildStyles() {
     console.log("building styles finished")
 }
 
-export async function optimizeImages() {
+async function optimizeImages() {
     console.log("optimizing images...")
     src("./assets/images/**/*")
         .pipe(imagemin())
@@ -88,14 +80,14 @@ export async function optimizeImages() {
     console.log("image optimization finished")
 }
 
-export function clean() {
+export async function clean() {
     console.log("removing previous build")
     del([BUILD_DIR])
     console.log("previous builds removed")
 }
 
 
-export async function watchForChanges() {
+async function watchForChanges() {
     await build()
     watch("./assets/scripts/**/*.js", buildScripts)
     watch(["./assets/styles/**/*.css", "./assets/styles/**/*.scss"], buildStyles)
@@ -114,5 +106,14 @@ export const build = async () => series(
         buildHtml
     ),
 )
+
+export async function liveBrowser() {
+    connect.server({
+        livereload: true,
+        root: "build",
+        port: 3000
+    })
+    await watchForChanges()
+}
 
 export {build as default}
