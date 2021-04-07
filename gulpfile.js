@@ -1,8 +1,7 @@
 const {dest, parallel, series, src, watch} = require('gulp'),
-    postcss = require('gulp-postcss'),
-    autoprefixer = require('autoprefixer'),
-    sass = require('postcss-node-sass'),
-    uncss = require('postcss-uncss'),
+    autoprefixer = require('gulp-autoprefixer'),
+    sass = require('gulp-sass'),
+    uncss = require('gulp-uncss'),
     cssnano = require('gulp-cssnano'),
     uglify = require('gulp-uglify'),
     babel = require('gulp-babel'),
@@ -48,13 +47,11 @@ function buildScripts(cb) {
 
 function buildStyles(cb) {
     src("./assets/styles/*.scss")
-        .pipe(postcss([
-            sass(),
-            autoprefixer(),
-            uncss({
-                html: ['./**/*.html']
-            })
-        ]))
+        .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer())
+        .pipe(uncss({
+            html: ["./**/*.html"]
+        }))
         .pipe(dest(getPath("./assets/styles/")))
         .pipe(cssnano())
         .pipe(rename({extname: ".min.css"}))
@@ -89,7 +86,7 @@ const build= series(
 )
 
 
-function watchForChanges() {
+async function watchForChanges() {
     build()
     watch("./assets/scripts/**/*.js", buildScripts)
     watch(["./assets/styles/**/*.css", "./assets/styles/**/*.scss"], buildStyles)
@@ -110,5 +107,5 @@ function liveBrowser() {
 }
 
 exports.default = build
-exports.dev = liveBrowser
+exports.watch= liveBrowser
 exports.clean = clean

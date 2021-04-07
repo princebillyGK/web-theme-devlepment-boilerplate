@@ -1,0 +1,1 @@
+console("Hello from file test js file")
